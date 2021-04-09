@@ -4,7 +4,6 @@ const ParamSignDynamicValue = function() {
   this.evaluate = function (context) {
     const request = context.getCurrentRequest()
     var params = {}
-    console.log(JSON.stringify(request))
     if (request.getHeaderByName("Content-Type") && request.getHeaderByName("Content-Type").indexOf('application/json') >= 0) {
       // const requestBody = request.getJsonBodyKeyPath('')
       params = {
@@ -65,6 +64,6 @@ function getSign(params, secret) {
 function paramsSort(params, secret) {
   const str = params.split("###").sort().join("&")
   const newStr = decodeURI(str) + '&key=' + secret
-  console.log(md5(newStr).toUpperCase(), newStr)
+  // console.log(md5(newStr).toUpperCase(), newStr)
   return md5(newStr).toUpperCase()
 }
