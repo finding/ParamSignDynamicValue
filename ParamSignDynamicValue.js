@@ -1,5 +1,7 @@
 const md5 = require('./md5')
 
+var debug = false
+
 const ParamSignDynamicValue = function() {
   this.evaluate = function (context) {
     const request = context.getCurrentRequest()
@@ -23,6 +25,8 @@ const ParamSignDynamicValue = function() {
       params = request.urlParameters
     }
 
+    debug = this.debug
+
     return getSign(params, this.secret)
 
   }
@@ -38,7 +42,8 @@ ParamSignDynamicValue.identifier = "com.Ken.ParamSignDynamicValue"
 ParamSignDynamicValue.title = "Request parameter signature"
 ParamSignDynamicValue.inputs = [
   InputField("secret", "Secret", "SecureValue"),
-  InputField("host", "Host", "EnvironmentVariable")
+  InputField("host", "Host", "EnvironmentVariable"),
+  InputField("debug", "Debug", "Checkbox", { defaultValue: false })
 ]
 
 registerDynamicValueClass(ParamSignDynamicValue)
@@ -64,6 +69,8 @@ function getSign(params, secret) {
 function paramsSort(params, secret) {
   const str = params.split("###").sort().join("&")
   const newStr = decodeURI(str) + '&key=' + secret
-  // console.log(md5(newStr).toUpperCase(), newStr)
+  if (debug) {
+    console.log(newStr, md5(newStr).toUpperCase())
+  }
   return md5(newStr).toUpperCase()
 }
