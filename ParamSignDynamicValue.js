@@ -10,7 +10,7 @@ const ParamSignDynamicValue = function() {
       // const requestBody = request.getJsonBodyKeyPath('')
       params = {
         method: request.getMethod(),
-        url: request.getUrl().replace(this.host.getCurrentValue(), ''),
+        url: unescape(request.getUrl().replace(this.host.getCurrentValue(), '')),
         body: unescape(request.getBody().replace(/(\\\u){1}/g, "%u")),
         timestamp: request.getHeaders().timestamp
       }
